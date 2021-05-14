@@ -6,17 +6,17 @@ from Product import Product
 my_logger = logging.getLogger('admin_logger')
 my_logger.setLevel(logging.DEBUG)
 file_handler = logging.FileHandler('File_log.log')
-# std_handler = logging.StreamHandler()
 file_handler.setLevel(logging.DEBUG)
-# std_handler.setLevel(logging.INFO)
 log_format = logging.Formatter('%(asctime)s - %(levelname)s -%(name)s- %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 file_handler.setFormatter(log_format)
-# std_handler.setFormatter(log_format)
 my_logger.addHandler(file_handler)
-# my_logger.addHandler(std_handler)
 
 
 def admin_menu():
+    """
+
+    :return: admin operation menu
+    """
     while True:
         print("========================================\n"
               "pleas login or create admin account\n"

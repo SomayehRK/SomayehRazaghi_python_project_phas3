@@ -9,17 +9,18 @@ from random import randint
 my_logger = logging.getLogger('product_logger')
 my_logger.setLevel(logging.DEBUG)
 file_handler = logging.FileHandler('File_log.log')
-# std_handler = logging.StreamHandler()
 file_handler.setLevel(logging.DEBUG)
-# std_handler.setLevel(logging.INFO)
 log_format = logging.Formatter('%(asctime)s - %(levelname)s -%(name)s- %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 file_handler.setFormatter(log_format)
-# std_handler.setFormatter(log_format)
 my_logger.addHandler(file_handler)
-# my_logger.addHandler(std_handler)
 
 
 def my_converter(obj):
+    """
+
+    :param obj:
+    :return:
+    """
     if isinstance(obj, np.integer):
         return int(obj)
     elif isinstance(obj, np.floating):
@@ -48,20 +49,23 @@ class Product:
     @staticmethod
     def display():
         """
-        :param goods_info_file: The goods information file
-        :return: a table containing the product name, brand and price of each unit is displayed to the customer.
+        :return: print a table containing the product name, brand and price of each unit is displayed to the customer.
         """
         try:
             df = pd.read_csv('Products_Inventory.csv')
             show_list = df.loc[:, ['name', 'brand', 'price']]
             print(show_list)
-            # return show_list
         except FileNotFoundError:
+            my_logger.error('file not found error', exc_info=True)
             print('there are not any products in store.\n')
-            # return False
 
     @staticmethod
     def update_inventory(customer_order_list):
+        """
+
+        :param customer_order_list: customer orders list
+        :return: update product inventory file base on customer orders list
+        """
         df = pd.read_csv('Products_Inventory.csv')
         with open('Products_Inventory.csv', 'r') as f:
             csv_reader = csv.DictReader(f)
@@ -78,6 +82,12 @@ class Product:
 
     @staticmethod
     def record_orders(customer_order_list, customer_info, total_purchase_price):
+        """
+        :param customer_order_list: customer orders list
+        :param customer_info: customer username
+        :param total_purchase_price: total price of customer ordering
+        :return: save order information in file
+        """
         if Path('Orders_invoices.json').is_file():
             orders = {randint(100, 999): {'date': str(date.today()), 'username': customer_info,
                                           'orders': customer_order_list,
@@ -96,6 +106,10 @@ class Product:
 
     @staticmethod
     def check_inventory():
+        """
+
+        :return: check products stock and return name and brand of finished products
+        """
         finishing_products = []
         with open('Products_Inventory.csv', 'r') as f:
             csv_reader = csv.DictReader(f)

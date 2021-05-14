@@ -8,25 +8,23 @@ import pandas as pd
 my_logger = logging.getLogger('user_logger')
 my_logger.setLevel(logging.DEBUG)
 file_handler = logging.FileHandler('File_log.log')
-# std_handler = logging.StreamHandler()
 file_handler.setLevel(logging.DEBUG)
-# std_handler.setLevel(logging.INFO)
 log_format = logging.Formatter('%(asctime)s - %(levelname)s -%(name)s- %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 file_handler.setFormatter(log_format)
-# std_handler.setFormatter(log_format)
 my_logger.addHandler(file_handler)
-# my_logger.addHandler(std_handler)
 
 
 class User:
 
     def __init__(self, username, name, password, phone_number, access_level='customer', status='Active'):
         """
-        :param access_level: user's access level : admin or customer
-        :param username: user's username
-        :param password: user's password
-        :param name: user's name
-        :param phone_number: user's phone number
+
+        :param username: username od user
+        :param name: name of user
+        :param password: password of user
+        :param phone_number: phone number of user
+        :param access_level: admin or customer
+        :param status: account status
         """
         self.access_level = access_level
         self.username = username
@@ -37,6 +35,12 @@ class User:
 
     @staticmethod
     def check_username(user_info, file_name):
+        """
+
+        :param user_info: username of user
+        :param file_name: file of users: Admin_info.csv or Customer_info.csv
+        :return: return True if this username not exists, else return False
+        """
         if Path(file_name).is_file():
             df = pd.read_csv(file_name, delimiter=',')
             if user_info in df.values:
@@ -53,6 +57,12 @@ class User:
 
     @staticmethod
     def create_account(user_info, file_name):
+        """
+
+        :param user_info: user information taken from user
+        :param file_name: file of users: Admin_info.csv or Customer_info.csv
+        :return: save user information to file
+        """
         with open(file_name, 'a', newline='') as f:
             fields_name = ['username', 'name', 'password', 'phone_number', 'access_level', 'status']
             csv_writer = csv.DictWriter(f, fieldnames=fields_name)
@@ -67,6 +77,13 @@ class User:
 
     @staticmethod
     def login(file_name, username, password):
+        """
+
+        :param file_name: file of users: Admin_info.csv or Customer_info.csv
+        :param username: username taken from user
+        :param password: password taken from user
+        :return: return True if password is correct and account status is Active, else return False
+        """
         with open(file_name, 'r') as f:
             csv_reader = csv.DictReader(f)
             for row in csv_reader:
@@ -77,6 +94,12 @@ class User:
 
     @staticmethod
     def chang_pass(file_name, *args):
+        """
+
+        :param file_name: file of users: Admin_info.csv or Customer_info.csv
+        :param args: username, old password and new password taken from user
+        :return: change old password in file
+        """
         df = pd.read_csv(file_name)
         location = 0
         with open(file_name, 'r') as f:
@@ -102,6 +125,13 @@ class Admin(User):
 
     @staticmethod
     def change_status(username, status, file_name):
+        """
+
+        :param username: username taken from user
+        :param status: change to which status: Active or Deactivate
+        :param file_name:file of users: Admin_info.csv or Customer_info.csv
+        :return:return True after change account status
+        """
         df = pd.read_csv(file_name)
         location = 0
         with open(file_name, 'r') as f:
@@ -113,33 +143,13 @@ class Admin(User):
                 location += 1
         return True
 
-    # @staticmethod
-    # def create_account(user_info, file_name):
-    #     with open(file_name, 'a', newline='') as f:
-    #         fields_name = ['username', 'name', 'password']
-    #         csv_writer = csv.DictWriter(f, fieldnames=fields_name)
-    #         if Path(file_name).stat().st_size == 0:
-    #             csv_writer.writeheader()
-    #             csv_writer.writerow({'username': user_info.username,
-    #                                  'name': user_info.name,
-    #                                  'password': hashlib.md5(user_info.password.encode()).hexdigest()})
-
-    # @staticmethod
-    # def login(file_name, username, password):
-    #     with open(file_name, 'r') as f:
-    #         csv_reader = csv.DictReader(f)
-    #         for row in csv_reader:
-    #             if row['username'] == username and row['password'] == hashlib.md5(password.encode()).hexdigest():
-    #                 return True
-    #     return False
-        # def login(users_list, username, password):
-    #     for user in users_list:
-    #         if user[0] == username and user[2] == hashlib.md5(password.encode()).hexdigest():
-    #             return True
-    #     return False
-
     @staticmethod
     def add_product(product_info):
+        """
+
+        :param product_info: product information taken from admin
+        :return: return True after inserting information in file
+        """
         with open('Products_Inventory.csv', 'a', newline='') as f:
             fields = ['barcode', 'name', 'brand', 'price', 'stock']
             csv_writer = csv.DictWriter(f, fieldnames=fields)
@@ -162,6 +172,13 @@ class Admin(User):
 
 class Customer(User):
     def __init__(self, username, name, password, phone_number):
+        """
+
+        :param username: customer username
+        :param name: customer name
+        :param password: customer password
+        :param phone_number: customer phone number
+        """
         self.username = username
         self.name = name
         self.password = password
@@ -170,6 +187,13 @@ class Customer(User):
 
     @staticmethod
     def ordering(product, numbers):
+        """
+
+        :param product: index of product in table
+        :param numbers: how many of this product
+        :return: return a dictionary contains of product information and total price if its stock is enough,
+                else return False
+        """
         try:
             with open('Products_Inventory.csv', 'r') as f:
                 csv_reader = csv.DictReader(f)

@@ -1,0 +1,26 @@
+2021-05-14 22:24:09 - INFO -admin_logger- admin login done
+NoneType: None
+2021-05-14 22:24:58 - INFO -admin_logger- new product added
+NoneType: None
+2021-05-14 22:25:23 - INFO -customer_logger- locked user
+NoneType: None
+2021-05-14 22:25:28 - INFO -customer_logger- active user
+NoneType: None
+2021-05-14 22:26:13 - INFO -customer_logger- new invoice
+NoneType: None
+2021-05-14 22:27:29 - INFO -admin_logger- admin login done
+NoneType: None
+2021-05-14 22:31:11 - INFO -admin_logger- admin login done
+NoneType: None
+2021-05-14 22:32:10 - INFO -admin_logger- admin login done
+NoneType: None
+2021-05-14 22:33:06 - INFO -admin_logger- admin login done
+NoneType: None
+2021-05-14 22:34:58 - INFO -admin_logger- admin login done
+NoneType: None
+2021-05-14 22:36:46 - INFO -admin_logger- admin login done
+NoneType: None
+2021-05-14 22:37:50 - INFO -admin_logger- admin login done
+NoneType: None
+2021-05-14 22:37:50 - INFO -product_logger- book from brand math is finished
+NoneType: None
